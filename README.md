@@ -8,7 +8,7 @@
 
 ## 📖 About The Project
 
-**FinTransaction Core** is a robust simulation of a Peer-to-Peer (P2P) payment system.
+**FinTransaction Core** is a robust simulation of a P2P payment system.
 
 This project was developed primarily as a **focused study lab** to master **Test-Driven Development (TDD)** and explore concepts of **Idempotency**.
 
@@ -16,7 +16,7 @@ My goal was to move beyond basic CRUD and implement a resilient architecture tha
 
 ## 🚀 Technical Highlights & Concepts Learned
 
-This project implements "Senior-Level" patterns to ensure data safety:
+This project implements patterns to ensure data safety:
 
 * **🧪 TDD First:** The entire business logic (Services) was built using Test-Driven Development. I wrote the tests *before* the code to guarantee that every financial constraint and edge case was covered from day one.
 * **🔄 Idempotency & Consistency:** Designed the transaction flow to be safe against double-processing. Using database constraints and atomic transactions, the system ensures that a retry of a failed request does not result in a duplicate transfer.
