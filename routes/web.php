@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,7 +17,17 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $wallet = Wallet::firstOrCreate(
+        ['user_id' => Auth::id()],
+        ['balance' => 0]
+    );
+
+    $users = User::where('id', '!=', Auth::id())->get();
+
+    return Inertia::render('Dashboard', [
+        'balance' => $wallet->balance,
+        'users' => $users,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
