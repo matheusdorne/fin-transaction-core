@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Wallet;
 use App\Services\TransferService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class TransferServiceTest extends TestCase
@@ -15,6 +16,12 @@ class TransferServiceTest extends TestCase
 
     public function test_users_can_transfer_money()
     {
+        Http::fake([
+            'https://util.devi.tools/*' => Http::response([
+                'data' => ['authorization' => true],
+            ], 200),
+        ]);
+
         $sender = User::factory()->create();
         $payerWallet = Wallet::factory()->create([
             'user_id' => $sender->id,
@@ -27,7 +34,7 @@ class TransferServiceTest extends TestCase
             'balance' => 0.00,
         ]);
 
-        $service = new TransferService;
+        $service = app(TransferService::class);
         $transaction = $service->transfer($sender->id, $receiver->id, 50.00);
 
         $this->assertEquals(50.00, $payerWallet->fresh()->balance);
