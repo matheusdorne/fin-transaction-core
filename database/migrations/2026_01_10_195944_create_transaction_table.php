@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transaction', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignId('sender_wallet_id')->constrained('wallets');
             $table->foreignId('receiver_wallet_id')->constrained('wallets');

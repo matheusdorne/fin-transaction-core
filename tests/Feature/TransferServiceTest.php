@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\TransactionStatus;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Services\TransferService;
@@ -37,7 +38,7 @@ class TransferServiceTest extends TestCase
             'sender_wallet_id' => $payerWallet->id,
             'receiver_wallet_id' => $payeeWallet->id,
             'amount' => 50.00,
-            'status' => 'SUCESS',
+            'status' => TransactionStatus::COMPLETED->value,
         ]);
     }
 }

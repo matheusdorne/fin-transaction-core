@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TransactionStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,5 +15,10 @@ class Transaction extends Model
         'receiver_wallet_id',
         'amount',
         'status',
+    ];
+
+    protected $casts = [
+        'status' => TransactionStatus::class,
+        'amount' => 'decimal:4',
     ];
 }
