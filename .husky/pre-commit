@@ -1,0 +1,27 @@
+#!/bin/sh
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+echo ""
+echo "${CYAN}🚀 [Husky] Starting pre-commit checks...${NC}"
+
+echo "${YELLOW}🧹 [Style] Running Laravel Pint to fix code style...${NC}"
+
+./vendor/bin/sail php vendor/bin/pint
+
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "${RED}❌ [Error] Pint failed! You might have a syntax error.${NC}"
+    echo "${RED}   Please check the output above and try again.${NC}"
+    exit 1
+fi
+
+git add .
+
+echo "${GREEN}✨ [Success] Code is shiny and compliant!${NC}"
+echo "${CYAN}📦 [Husky] Proceeding with commit...${NC}"
+echo ""
