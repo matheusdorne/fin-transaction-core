@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\TransactionStatus;
+use App\Jobs\SendNotificationJob;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Exception;
@@ -36,12 +37,16 @@ class TransferService
             $senderWallet->decrement('balance', $amount);
             $receiverWallet->increment('balance', $amount);
 
-            return Transaction::create([
+            $transaction = Transaction::create([
                 'sender_wallet_id' => $senderWallet->id,
                 'receiver_wallet_id' => $receiverWallet->id,
                 'amount' => $amount,
                 'status' => TransactionStatus::COMPLETED,
             ]);
+
+            SendNotificationJob::dispatch($transaction);
+
+            return $transaction;
         });
     }
 }
