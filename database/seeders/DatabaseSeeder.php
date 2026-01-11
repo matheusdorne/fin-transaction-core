@@ -15,11 +15,37 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
+        $test = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $test->wallet()->create([
+            'balance' => 1000000.00,
+        ]);
+
+        $sender = User::factory()->create([
+            'name' => 'Matheus Dornelles',
+            'email' => 'admin@test.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $sender->wallet()->create([
+            'balance' => 1250.00,
+        ]);
+
+        $receiver = User::factory()->create([
+            'name' => 'Linus Torvalds',
+            'email' => 'linuxfather@yahoo.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $receiver->wallet()->create([
+            'balance' => 10.00,
+        ]);
+
+        User::factory(5)->create()->each(function ($user) {
+            $user->wallet()->create(['balance' => 0]);
+        });
     }
 }
