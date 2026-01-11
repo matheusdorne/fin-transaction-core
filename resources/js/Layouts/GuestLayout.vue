@@ -8,13 +8,9 @@ import ApplicationLogo from "@/Components/ApplicationLogo.vue";
         class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900"
     >
         <div>
-            <Link href="/">
-                <ApplicationLogo class="w-20 h-20" />
+            <Link href="/login" class="flex flex-col items-center gap-4">
+                <ApplicationLogo class="w-64" />
             </Link>
-
-            <span class="text-3xl font-bold text-gray-900 dark:text-white">
-                PilaBank
-            </span>
         </div>
 
         <div
