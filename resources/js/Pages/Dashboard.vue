@@ -60,7 +60,7 @@ const submitTransfer = () => {
                                 >Send to</label
                             >
                             <select
-                                v-model="form.payee_id"
+                                v-model="form.receiver_id"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             >
                                 <option value="" disabled>
@@ -74,14 +74,14 @@ const submitTransfer = () => {
                                     {{ user.name }} ({{ user.email }})
                                 </option>
                             </select>
+
                             <div
-                                v-if="form.errors.payee_id"
+                                v-if="form.errors.receiver_id"
                                 class="text-red-500 text-sm mt-1"
                             >
                                 {{ form.errors.receiver_id }}
                             </div>
                         </div>
-
                         <div>
                             <label
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300"
