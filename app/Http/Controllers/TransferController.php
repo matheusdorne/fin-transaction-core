@@ -11,7 +11,7 @@ class TransferController extends Controller
     public function store(Request $request, TransferService $service)
     {
         $validated = $request->validate([
-            'receive_id' => 'required|exists:users,id',
+            'receiver_id' => 'required|exists:users,id',
             'amount' => 'required|numeric|min:0.01',
         ]);
 
