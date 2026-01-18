@@ -41,9 +41,9 @@ class DashBoardTransactionTest extends TestCase
         $response->assertStatus(200)
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Dashboard')
-                ->has('transctions', 2)
-                ->where('transactions.0.amount', 50)
-                ->where('transactions.1.amount', 100)
+                ->has('transactions', 2)
+                ->where('transactions.0.amount', '100.0000')
+                ->where('transactions.1.amount', '50.0000')
             );
     }
 }
