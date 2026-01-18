@@ -1,11 +1,9 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransferController;
-use App\Models\User;
-use App\Models\Wallet;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -15,19 +13,9 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', function () {
-    $wallet = Wallet::firstOrCreate(
-        ['user_id' => Auth::id()],
-        ['balance' => 0]
-    );
-
-    $users = User::where('id', '!=', Auth::id())->get();
-
-    return Inertia::render('Dashboard', [
-        'balance' => $wallet->balance,
-        'users' => $users,
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', DashboardController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

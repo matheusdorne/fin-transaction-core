@@ -2,9 +2,12 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 
+// Props received from DashboardController
 const props = defineProps({
     balance: Number,
     users: Array,
+    transactions: Array, // <--- The history list
+    myWalletId: Number, // <--- Needed to know if I sent or received
 });
 
 const form = useForm({
@@ -15,6 +18,18 @@ const form = useForm({
 const submitTransfer = () => {
     form.post(route("transfers.store"), {
         onSuccess: () => form.reset("amount", "receiver_id"),
+    });
+};
+
+// Helper function to format dates nicely (e.g., 18/01/2026 15:30)
+const formatDate = (dateString) => {
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
     });
 };
 </script>
@@ -118,6 +133,79 @@ const submitTransfer = () => {
                             Transfer Successful! 🚀
                         </div>
                     </form>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+                >
+                    <h3
+                        class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4"
+                    >
+                        Recent Transactions
+                    </h3>
+
+                    <div
+                        v-if="transactions.length === 0"
+                        class="text-gray-500 dark:text-gray-400 text-center py-4"
+                    >
+                        No transactions found yet.
+                    </div>
+
+                    <ul
+                        v-else
+                        class="divide-y divide-gray-200 dark:divide-gray-700"
+                    >
+                        <li
+                            v-for="t in transactions"
+                            :key="t.id"
+                            class="py-4 flex justify-between items-center"
+                        >
+                            <div>
+                                <p
+                                    class="text-sm font-medium text-gray-900 dark:text-gray-100"
+                                >
+                                    <span
+                                        v-if="
+                                            t.sender_wallet_id ===
+                                            props.myWalletId
+                                        "
+                                    >
+                                        Sent to
+                                        <strong>{{
+                                            t.receiver?.user?.name || "Unknown"
+                                        }}</strong>
+                                    </span>
+                                    <span v-else>
+                                        Received from
+                                        <strong>{{
+                                            t.sender?.user?.name || "Unknown"
+                                        }}</strong>
+                                    </span>
+                                </p>
+                                <p
+                                    class="text-xs text-gray-500 dark:text-gray-400"
+                                >
+                                    {{ formatDate(t.created_at) }}
+                                </p>
+                            </div>
+
+                            <div
+                                class="text-lg font-bold"
+                                :class="
+                                    t.sender_wallet_id === props.myWalletId
+                                        ? 'text-red-500'
+                                        : 'text-green-500'
+                                "
+                            >
+                                {{
+                                    t.sender_wallet_id === props.myWalletId
+                                        ? "-"
+                                        : "+"
+                                }}
+                                R$ {{ t.amount }}
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
